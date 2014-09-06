@@ -69,6 +69,9 @@ public abstract class Request<T> implements Comparable<Request<T>> {
     /** URL of this request. */
     private final String mUrl;
 
+    /** URL of the 301/302 redirect. It will be populated by the network layer upon redirection */
+    private String mRedirectURL;
+
     /** Default tag for {@link TrafficStats}. */
     private final int mDefaultTrafficStatsTag;
 
@@ -281,10 +284,26 @@ public abstract class Request<T> implements Comparable<Request<T>> {
     }
 
     /**
-     * Returns the URL of this request.
+     * Returns the URL of this request. In case of redirection return the redirect URL
      */
     public String getUrl() {
-        return mUrl;
+        return mRedirectURL == null ? mUrl : mRedirectURL;
+    }
+
+    /**
+     * Getter for the original URL. It will be used in case of redirection
+     */
+    public String getOriginalURL()
+    {
+    	return mUrl;
+    }
+
+    /**
+     * Getter for the original URL. It will be used in case of redirection
+     */
+    public void setRedirectURL(String redirectURL)
+    {
+    	mRedirectURL = redirectURL;;
     }
 
     /**
